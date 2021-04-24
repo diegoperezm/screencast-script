@@ -15,6 +15,7 @@ A simple script that:
 
 Tested using:
 
+- vim 
 - i3wm
 - kitty 0.20.1 [with allow remote control enabled](https://sw.kovidgoyal.net/kitty/remote-control.html?highlight=allow)
 - [scrot 0.8](https://en.wikipedia.org/wiki/Scrot)
