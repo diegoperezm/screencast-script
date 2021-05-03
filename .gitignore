@@ -5,6 +5,7 @@
 
 # project files and folders 
 /example/img/
+video.txt
 *.mp4
 *.mp3 
 
