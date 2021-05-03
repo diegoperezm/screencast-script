@@ -183,5 +183,8 @@ screencast.vim_scroll_down_take_screenshots()
 screencast.sleep(2)
 screencast.take_screenshots(24)
 
-screencast.make_video_with_audio(
-    audio_file="./sunny-days-anno-domini-beats.mp3")
+screencast.make_video()
+
+# If you want to use this, you need an audio file (in the folder)
+# screencast.make_video_with_audio(
+#     audio_file="./audio.mp3")
