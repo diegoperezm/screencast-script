@@ -4,7 +4,7 @@
 /node_modules
 
 # project files and folders 
-/example/img/
+/examples/img/
 video.txt
 *.mp4
 *.mp3 
