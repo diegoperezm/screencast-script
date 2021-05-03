@@ -196,7 +196,7 @@ class ScreencastScript:
 
     def __take_png(self, path=None, counter=None, quality="75"):
         if (isinstance(path, str) and isinstance(counter, int)):
-            subprocess.run([
+            self.send_command([
                 "scrot", f'{path}{str(counter)}.png', "--quality", f'{quality}'
             ])
         else:
@@ -286,7 +286,7 @@ class ScreencastScript:
 
     def send_input(self, text, sleep=0):
         for char in text:
-            subprocess.run(self.text_command(char))
+            self.send_command(self.text_command(char))
             time.sleep(sleep)
 
     def send_input_take_screenshots(self,
@@ -299,7 +299,7 @@ class ScreencastScript:
         counter = len(os.listdir(path))
         for char in text:
             counter += 1
-            subprocess.run(self.text_command(char))
+            self.send_command(self.text_command(char))
             # sleep: when completedProcess is returned, there is nothing in the screen
             time.sleep(sleep)
             self.__take_png(path, counter, quality)
@@ -348,7 +348,7 @@ class ScreencastScript:
                 sleep_text = text["sleep"] if "sleep" in text else 0
                 for char in text["text_code"]:
                     text_screenshot_counter += 1
-                    subprocess.run(self.text_command(char))
+                    self.send_command(self.text_command(char))
                     self.__take_png(path, text_screenshot_counter, quality)
                     time.sleep(sleep_text)
         else:
@@ -431,24 +431,24 @@ class ScreencastScript:
         with open(f'{video_name}.txt', "a") as file:
             file.write(f"file '{SOURCE_DIR}{png_list[len(png_list) - 1]}'\n")
 
-        subprocess.run(ffmpeg_command)
+        self.send_command(ffmpeg_command)
 
     def i3wm_launch(self, program):
         if (program == "gvim"):
-            subprocess.run([self.prefix, "key", "Super_L+g"])
+            self.send_command([self.prefix, "key", "Super_L+g"])
 
         elif (program == "vim"):
-            subprocess.run([self.prefix, "key", "Alt_L+Return"])
+            self.send_command([self.prefix, "key", "Alt_L+Return"])
             time.sleep(5)
-            subprocess.run([self.prefix, "key", "v", "i", "m", "Return"])
+            self.send_command([self.prefix, "key", "v", "i", "m", "Return"])
 
         elif (program == "kitty"):
-            subprocess.run([self.prefix, "key", "Alt_L+Return"])
+            self.send_command([self.prefix, "key", "Alt_L+Return"])
 
         elif (program == "xonsh"):
-            subprocess.run([self.prefix, "key", "Alt_L+Return"])
+            self.send_command([self.prefix, "key", "Alt_L+Return"])
             time.sleep(5)
-            subprocess.run([
+            self.send_command([
                 self.prefix, "key", "x", "o", "n", "s", "h", "space", "minus",
                 "minus", "r", "c", "space", "period", "r", "c", "minus", "s",
                 "c", "Return"
@@ -456,11 +456,11 @@ class ScreencastScript:
 
     def kitty_launch(self, program, file_name=None):
         if (file_name is not None):
-            subprocess.run([
+            self.send_command([
                 "kitty", "@", "launch", "--type=os-window", program, file_name
             ])
         else:
-            subprocess.run(
+            self.send_command(
                 ["kitty", "@", "launch", "--type=os-window", program])
 
     def send_command_take_screenshots(self, command, before=4, after=4):
