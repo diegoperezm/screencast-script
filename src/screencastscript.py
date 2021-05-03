@@ -60,9 +60,9 @@ class ScreencastScript:
         line_n = list(n)
         prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
         self.send_command([self.prefix, "key", "Escape"])
-        time.sleep(1)
+        self.sleep(1)
         self.send_command(prefix_key_line_n_go)
-        time.sleep(1)
+        self.sleep(1)
         self.send_command([self.prefix, "key", "z", "t"])
 
     def vim_split_window_v(self):
@@ -156,9 +156,9 @@ class ScreencastScript:
         prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
         self.send_command_take_screenshots([self.prefix, "key", "Escape"],
                                            before, after)
-        time.sleep(0.2)
+        self.sleep(0.2)
         self.send_command_take_screenshots(prefix_key_line_n_go, before, after)
-        time.sleep(0.2)
+        self.sleep(0.2)
         self.send_command_take_screenshots([self.prefix, "key", "z", "t"],
                                            before, after)
 
@@ -287,7 +287,7 @@ class ScreencastScript:
     def send_input(self, text, sleep=0):
         for char in text:
             self.send_command(self.text_command(char))
-            time.sleep(sleep)
+            self.sleep(sleep)
 
     def send_input_take_screenshots(self,
                                     text,
@@ -301,7 +301,7 @@ class ScreencastScript:
             counter += 1
             self.send_command(self.text_command(char))
             # sleep: when completedProcess is returned, there is nothing in the screen
-            time.sleep(sleep)
+            self.sleep(sleep)
             self.__take_png(path, counter, quality)
 
     def take_screenshots(self, n=1, path="./img/", quality="75", sleep=0):
@@ -310,7 +310,7 @@ class ScreencastScript:
         for x in range(n):
             counter += 1
             self.__take_png(path, counter, quality)
-            time.sleep(sleep)
+            self.sleep(sleep)
 
     def make_video_chunk(self,
                          path=None,
@@ -350,7 +350,7 @@ class ScreencastScript:
                     text_screenshot_counter += 1
                     self.send_command(self.text_command(char))
                     self.__take_png(path, text_screenshot_counter, quality)
-                    time.sleep(sleep_text)
+                    self.sleep(sleep_text)
         else:
             print("make_video_chunk, replace this with a better error handler")
 
@@ -362,12 +362,12 @@ class ScreencastScript:
                 screenshot_n = command[
                     "screenshot_n"] if "screenshot_n" in command else 1
                 command["func"](*command["params"])
-                time.sleep(sleep_command)
+                self.sleep(sleep_command)
 
                 for x in range(screenshot_n):
                     screenshot_counter += 1
                     self.__take_png(path, screenshot_counter, quality)
-                    time.sleep(sleep_command)
+                    self.sleep(sleep_command)
         else:
             print("make_video_chunk, replace this with a better error handler")
 
@@ -439,7 +439,7 @@ class ScreencastScript:
 
         elif (program == "vim"):
             self.send_command([self.prefix, "key", "Alt_L+Return"])
-            time.sleep(5)
+            self.sleep(5)
             self.send_command([self.prefix, "key", "v", "i", "m", "Return"])
 
         elif (program == "kitty"):
@@ -447,7 +447,7 @@ class ScreencastScript:
 
         elif (program == "xonsh"):
             self.send_command([self.prefix, "key", "Alt_L+Return"])
-            time.sleep(5)
+            self.sleep(5)
             self.send_command([
                 self.prefix, "key", "x", "o", "n", "s", "h", "space", "minus",
                 "minus", "r", "c", "space", "period", "r", "c", "minus", "s",
