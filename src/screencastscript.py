@@ -455,12 +455,13 @@ class ScreencastScript:
             ])
 
     def kitty_launch(self, program, file_name=None):
-        kitty = "/home/erretres/.local/kitty.app/bin/kitty"
         if (file_name is not None):
-            subprocess.run(
-                [kitty, "@", "launch", "--type=os-window", program, file_name])
+            subprocess.run([
+                "kitty", "@", "launch", "--type=os-window", program, file_name
+            ])
         else:
-            subprocess.run([kitty, "@", "launch", "--type=os-window", program])
+            subprocess.run(
+                ["kitty", "@", "launch", "--type=os-window", program])
 
     def send_command_take_screenshots(self, command, before=4, after=4):
         self.take_screenshots(before)
