@@ -9,7 +9,7 @@ A simple script that:
  - Takes screenshots (scrot)
  - Converts the png files to video (ffmpeg)
 
-[Video](https://youtu.be/9yXejXH4ixI)
+[Video](https://youtu.be/dWMk2oIwnPg)
 
 ## Installing / Getting started
 

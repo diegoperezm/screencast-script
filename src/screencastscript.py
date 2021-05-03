@@ -11,6 +11,12 @@ class ScreencastScript:
     def i3wm_focus_left(self):
         self.send_command([self.prefix, "key", "Alt_L+Left"])
 
+    def i3wm_zoom_in(self):
+        self.send_command([self.prefix, "key", "Control_L+plus"])
+
+    def i3wm_zoom_out(self):
+        self.send_command([self.prefix, "key", "Control_L+underscore"])
+
     def i3wm_focus_right(self):
         self.send_command([self.prefix, "key", "Alt_L+Right"])
 
@@ -50,6 +56,15 @@ class ScreencastScript:
     def vim_scroll_down(self):
         self.send_command([self.prefix, "key", "Control_L+f"])
 
+    def vim_go_to_line(self, n):
+        line_n = list(n)
+        prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
+        self.send_command([self.prefix, "key", "Escape"])
+        time.sleep(1)
+        self.send_command(prefix_key_line_n_go)
+        time.sleep(1)
+        self.send_command([self.prefix, "key", "z", "t"])
+
     def vim_split_window_v(self):
         self.send_command([self.prefix, "key", "Escape", "Control_L+w", "v"])
 
@@ -71,6 +86,14 @@ class ScreencastScript:
 
     def nano_exit_confirm(self):
         self.send_command([self.prefix, "key", "Control_L+x", "y", "Return"])
+
+    def i3wm_zoom_in_take_screenshots(self, before=4, after=4):
+        self.send_command_take_screenshots(
+            [self.prefix, "key", "Control_L+plus"], before, after)
+
+    def i3wm_zoom_out_take_screenshots(self, before=4, after=4):
+        self.send_command_take_screenshots(
+            [self.prefix, "key", "Control_L+underscore"], before, after)
 
     def i3wm_focus_left_take_screenshots(self, before=4, after=4):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Left"],
@@ -128,6 +151,17 @@ class ScreencastScript:
         self.send_command_take_screenshots([self.prefix, "key", "Control_L+f"],
                                            before, after)
 
+    def vim_go_to_line_take_screenshots(self, n, before=4, after=4):
+        line_n = list(n)
+        prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
+        self.send_command_take_screenshots([self.prefix, "key", "Escape"],
+                                           before, after)
+        time.sleep(0.2)
+        self.send_command_take_screenshots(prefix_key_line_n_go, before, after)
+        time.sleep(0.2)
+        self.send_command_take_screenshots([self.prefix, "key", "z", "t"],
+                                           before, after)
+
     def vim_split_window_v_take_screenshots(self, before=4, after=4):
         self.send_command_take_screenshots(
             [self.prefix, "key", "Escape", "Control_L+w", "v"], before, after)
@@ -171,6 +205,21 @@ class ScreencastScript:
     def text_command(self, char):
         if (char == " "):
             return [self.prefix, "key", "space"]
+
+        elif (char == "*"):
+            return [self.prefix, "key", "asterisk"]
+
+        elif (char == "-"):
+            return [self.prefix, "key", "minus"]
+
+        elif (char == "+"):
+            return [self.prefix, "key", "plus"]
+
+        elif (char == "<"):
+            return [self.prefix, "key", "less"]
+
+        elif (char == ">"):
+            return [self.prefix, "key", "greater"]
 
         elif (char == "_"):
             return [self.prefix, "key", "underscore"]
@@ -256,6 +305,7 @@ class ScreencastScript:
             self.__take_png(path, counter, quality)
 
     def take_screenshots(self, n=1, path="./img/", quality="75", sleep=0):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         counter = len(os.listdir(path))
         for x in range(n):
             counter += 1
@@ -329,7 +379,7 @@ class ScreencastScript:
                               video_name="video",
                               video_ext=".mp4",
                               audio_file=None,
-                              audio_volume="0.25"):
+                              audio_volume="0.20"):
 
         if (isinstance(audio_file, str)):
             self.make_video(SOURCE_DIR, frame_duration, video_name, video_ext,
@@ -419,13 +469,3 @@ class ScreencastScript:
 
     def send_command(self, command):
         subprocess.run(command)
-
-    def vim_go_to_line(self, n):
-        c = ''
-        for x in n:
-            c += x + " "
-        subprocess.run([self.prefix, "key", "Escape"])
-        time.sleep(1)
-        subprocess.run([self.prefix, "key", c, "G"])
-        time.sleep(1)
-        subprocess.run([self.prefix, "key", "z", "t"])
