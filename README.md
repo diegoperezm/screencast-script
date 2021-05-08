@@ -15,7 +15,9 @@ A simple script that:
 ## Basic example
 
 The png files are stored by default in the folder: `img/`.
+
 At the moment it can only send commands in sequence and is not aware of when the command result is displayed on the screen.
+
 Currently the length of the video is set indirectly using commands that takes screenshots: each screenshot is a fraction of a second.
 
 ```python
