@@ -1,9 +1,42 @@
+"""Implements the central object of ScreencastScript."""
 import os
 import subprocess
 import time
 
 
 class ScreencastScript:
+    """Base class for everything.
+
+    This program:
+      - Sends commands to other programs (kitty, xdotool)
+      - Takes screenshots (scrot)
+      - Converts the png files to video (ffmpeg)
+
+    The png files are stored by default in the folder: `img/`.
+
+    At the moment it can only send commands in sequence and is not aware of when the command result
+    is displayed on the screen.
+
+    Currently the length of the video is set indirectly using commands that takes screenshots:
+    each screenshot is a fraction of a second.
+
+    Examples:
+    --------
+    # Basic example
+    screencast = ScreencastScript()
+
+    # send i3wm commands
+    screencast.i3wm_ws_2()
+   
+    # Sending commands can be paused 
+    screencast.sleep(2)
+
+    # Take screenshots of the screen
+    screencast.take_screenshots(8)
+
+    # This will take the png files from folder `img/` to create a video  
+    make_video()
+    """
     def __init__(self):
         self.prefix = "xdotool"
         self.enter_ret = "Ϟ"  # greek letter koppa
