@@ -206,6 +206,12 @@ class ScreencastScript:
         if (char == " "):
             return [self.prefix, "key", "space"]
 
+        elif (char == "←"):
+            return [self.prefix, "key", "BackSpace"]
+
+        elif (char == "%"):
+            return [self.prefix, "key", "percent"]
+
         elif (char == "*"):
             return [self.prefix, "key", "asterisk"]
 
