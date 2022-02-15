@@ -2,6 +2,16 @@
 import os
 import subprocess
 import time
+from mss import mss
+
+# getting an error using this:
+# GNU/Linux
+#from mss.linux import MSS as mss
+# MacOS X
+#from mss.darwin import MSS as mss
+# Microsoft Windows
+#from mss.windows import MSS as mss
+# ImportError: cannot import name 'WINFUNCTYPE' from 'ctypes'
 
 
 class ScreencastScript:
@@ -9,7 +19,7 @@ class ScreencastScript:
 
     This program:
       - Sends commands to other programs (kitty, xdotool)
-      - Takes screenshots (scrot)
+      - Takes screenshots (mss)
       - Converts the png files to video (ffmpeg)
 
     The png files are stored by default in the folder: `img/`.
@@ -75,10 +85,14 @@ class ScreencastScript:
             "exit_confirm": [self.prefix, "key", "Control_L+x", "y", "Return"],
         }
 
-    def send_command_take_screenshots(self, command, before=4, after=4):
-        self.take_screenshots(before)
+    def send_command_take_screenshots(self,
+                                      command,
+                                      monitor_number,
+                                      before=4,
+                                      after=4):
+        self.take_screenshots(monitor_number, before)
         subprocess.run(command)
-        self.take_screenshots(after)
+        self.take_screenshots(monitor_number, after)
 
     def send_command(self, command):
         subprocess.run(command)
@@ -92,18 +106,31 @@ class ScreencastScript:
     def i3wm_send_command(self, command):
         self.send_command(self.i3wm_actions[command])
 
-    def nano_send_command_take_screenshots(self, command, before=4, after=4):
-        self.send_command_take_screenshots(self.nano_actions[command], before,
-                                           after)
+    def nano_send_command_take_screenshots(self,
+                                           command,
+                                           monitor_number,
+                                           before=4,
+                                           after=4):
+        self.send_command_take_screenshots(self.nano_actions[command],
+                                           monitor_number, before, after)
 
-    def vim_send_command_take_screenshots(self, command, before=4, after=4):
+    def vim_send_command_take_screenshots(self,
+                                          command,
+                                          monitor_number,
+                                          before=4,
+                                          after=4):
         self.send_command_take_screenshots(self.vim_actions[command],
+                                           monitor_number,
                                            before=4,
                                            after=4)
 
-    def i3wm_send_command_take_screenshots(self, command, before=4, after=4):
-        self.send_command_take_screenshots(self.i3wm_actions[command], before,
-                                           after)
+    def i3wm_send_command_take_screenshots(self,
+                                           command,
+                                           monitor_number,
+                                           before=4,
+                                           after=4):
+        self.send_command_take_screenshots(self.i3wm_actions[command],
+                                           monitor_number, before, after)
 
     def vim_go_to_line(self, n):
         line_n = list(n)
@@ -114,20 +141,28 @@ class ScreencastScript:
         self.sleep(1)
         self.send_command([self.prefix, "key", "z", "t"])
 
-    def vim_go_to_line_take_screenshots(self, n, before=4, after=4, path=None):
+    def vim_go_to_line_take_screenshots(self,
+                                        n,
+                                        monitor_number,
+                                        before=4,
+                                        after=4,
+                                        path=None):
         line_n = list(n)
         prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
         self.send_command_take_screenshots([self.prefix, "key", "Escape"],
+                                           monitor_number,
                                            before,
                                            after,
                                            path=None)
         self.sleep(0.2)
         self.send_command_take_screenshots(prefix_key_line_n_go,
+                                           monitor_number,
                                            before,
                                            after,
                                            path=None)
         self.sleep(0.2)
         self.send_command_take_screenshots([self.prefix, "key", "z", "t"],
+                                           monitor_number,
                                            before,
                                            after,
                                            path=None)
@@ -164,11 +199,11 @@ class ScreencastScript:
     def sleep(self, time_to_sleep=0):
         time.sleep(time_to_sleep)
 
-    def __take_png(self, path=None, counter=None, quality="75"):
+    def __take_png(self, monitor_number, path=None, counter=None):
         if (isinstance(path, str) and isinstance(counter, int)):
-            self.send_command([
-                "scrot", f'{path}{str(counter)}.png', "--quality", f'{quality}'
-            ])
+            with mss() as sct:
+                sct.shot(mon=monitor_number,
+                         output=f'{path}{str(counter)}.png')
         else:
             print("__take_png, replace this with a better error handler")
 
@@ -266,9 +301,9 @@ class ScreencastScript:
             self.sleep(sleep)
 
     def send_input_take_screenshots(self,
+                                    monitor_number,
                                     text,
                                     path="./img/",
-                                    quality="75",
                                     sleep=0.2):
 
         # counter: number of png files on {path}
@@ -278,21 +313,21 @@ class ScreencastScript:
             self.send_command(self.text_command(char))
             # sleep: when completedProcess is returned, there is nothing in the screen
             self.sleep(sleep)
-            self.__take_png(path, counter, quality)
+            self.__take_png(monitor_number, path, counter)
 
-    def take_screenshots(self, n=1, path="./img/", quality="75", sleep=0):
+    def take_screenshots(self, monitor_number, n=1, path="./img/",  sleep=0):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         counter = len(os.listdir(path))
         for x in range(n):
             counter += 1
-            self.__take_png(path, counter, quality)
+            self.__take_png(monitor_number, path, counter)
             self.sleep(sleep)
 
     def make_video_chunk(self,
+                         monitor_number,
                          path=None,
                          texts=None,
                          commands=None,
-                         quality="75",
                          frame_duration=0.2,
                          video_name="video",
                          video_ext=".mp4"):
@@ -325,7 +360,8 @@ class ScreencastScript:
                 for char in text["text_code"]:
                     text_screenshot_counter += 1
                     self.send_command(self.text_command(char))
-                    self.__take_png(path, text_screenshot_counter, quality)
+                    self.__take_png(path, text_screenshot_counter,
+                                    monitor_number)
                     self.sleep(sleep_text)
         else:
             print("make_video_chunk, replace this with a better error handler")
@@ -342,7 +378,7 @@ class ScreencastScript:
 
                 for x in range(screenshot_n):
                     screenshot_counter += 1
-                    self.__take_png(path, screenshot_counter, quality)
+                    self.__take_png(path, screenshot_counter, monitor_number)
                     self.sleep(sleep_command)
         else:
             print("make_video_chunk, replace this with a better error handler")
