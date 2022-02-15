@@ -16,14 +16,14 @@ https://matplotlib.org/stable/gallery/showcase/anatomy.html
 This figure shows the name of several matplotlib elements composing a figure
 """
 
-screencast.i3wm_ws_2()
+screencast.i3wm_send_command("ws_2")
 screencast.sleep(2)
 
 screencast.take_screenshots(8)
-screencast.i3wm_focus_right_take_screenshots()
+screencast.i3wm_send_command_take_screenshots("focus_right")
 screencast.take_screenshots(12)
 
-screencast.i3wm_toggle_fullscreen_take_screenshots()
+screencast.i3wm_send_command_take_screenshots("toggle_fullscreen")
 screencast.sleep(2)
 
 screencast.send_input_take_screenshots("""import numpy as np
@@ -458,4 +458,4 @@ screencast.send_input_take_screenshots("""plt.show()
 screencast.sleep(4)
 screencast.take_screenshots(8)
 
-screencast.i3wm_ws_1()
+screencast.i3wm_send_command("ws_1")

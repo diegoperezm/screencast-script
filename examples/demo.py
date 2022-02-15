@@ -13,11 +13,11 @@ screencast = ScreencastScript()
 #                                #
 ##################################
 
-screencast.i3wm_ws_2()
+screencast.i3wm_send_command("ws_2")
 screencast.sleep(2)
 
 screencast.take_screenshots(8)
-screencast.i3wm_focus_right()
+screencast.i3wm_send_command("focus_right")
 
 screencast.send_input_take_screenshots("""import matplotlib.pyplot as plt
 """)
@@ -62,7 +62,7 @@ y4[y3 > 0.7] = np.nan
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.i3wm_toggle_fullscreen()
+screencast.i3wm_send_command("toggle_fullscreen")
 screencast.take_screenshots(8)
 screencast.sleep(4)
 
@@ -136,50 +136,50 @@ screencast.send_input_take_screenshots("""plt.show()
 screencast.sleep(4)
 screencast.take_screenshots(12)
 
-screencast.i3wm_toggle_fullscreen_take_screenshots()
+screencast.i3wm_send_command_take_screenshot("toggle_fullscreen")
 screencast.take_screenshots(4)
 
 screencast.i3wm_focus_left_take_screenshots()
 screencast.take_screenshots(4)
 screencast.sleep(2)
 
-screencast.i3wm_toggle_fullscreen_take_screenshots()
+screencast.i3wm_send_command_take_screenshot("toggle_fullscreen")
 screencast.take_screenshots(4)
 screencast.sleep(2)
 
-screencast.i3wm_zoom_in_take_screenshots()
+screencast.i3wm_send_command_take_screenshots("zoom_in")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.i3wm_zoom_in_take_screenshots()
+screencast.i3wm_send_command_take_screenshots("zoom_in")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.i3wm_zoom_in_take_screenshots()
+screencast.i3wm_send_command_take_screenshots("zoom_in")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.vim_scroll_down_take_screenshots()
+screencast.vim_send_command_take_screenshots("scroll_down")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.vim_scroll_down_take_screenshots()
+screencast.vim_send_command_take_screenshots("scroll_down")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.vim_scroll_down_take_screenshots()
+screencast.vim_send_command_take_screenshots("scroll_down")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.vim_scroll_down_take_screenshots()
+screencast.vim_send_command_take_screenshots("scroll_down")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.vim_scroll_down_take_screenshots()
+screencast.vim_send_command_take_screenshots("scroll_down")
 screencast.sleep(2)
 screencast.take_screenshots(8)
 
-screencast.vim_scroll_down_take_screenshots()
+screencast.vim_send_command_take_screenshots("scroll_down")
 screencast.sleep(2)
 screencast.take_screenshots(24)
 

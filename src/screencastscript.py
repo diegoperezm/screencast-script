@@ -26,7 +26,7 @@ class ScreencastScript:
     screencast = ScreencastScript()
 
     # send i3wm commands
-    screencast.i3wm_ws_2()
+    screencast.i3wm_send_command("ws_2")
    
     # Sending commands can be paused 
     screencast.sleep(2)
@@ -40,54 +40,70 @@ class ScreencastScript:
     def __init__(self):
         self.prefix = "xdotool"
         self.enter_ret = "Ϟ"  # greek letter koppa
+        self.i3wm_actions = {
+            "focus_up": [self.prefix, "key", "Alt_L+Up"],
+            "focus_right": [self.prefix, "key", "Alt_L+Right"],
+            "focus_left": [self.prefix, "key", "Alt_L+Left"],
+            "focus_down": [self.prefix, "key", "Alt_L+Down"],
+            "zoom_in": [self.prefix, "key", "Control_L+plus"],
+            "zoom_out": [self.prefix, "key", "Control_L+underscore"],
+            "toggle_fullscreen": [self.prefix, "key", "Alt_L+f"],
+            "ws_1": [self.prefix, "key", "Alt_L+1"],
+            "ws_2": [self.prefix, "key", "Alt_L+2"],
+        }
 
-    def i3wm_focus_left(self):
-        self.send_command([self.prefix, "key", "Alt_L+Left"])
+        self.vim_actions = {
+            "insert": [self.prefix, "key", "Escape", "i"],
+            "up": [self.prefix, "key", "Escape", "k"],
+            "down": [self.prefix, "key", "Escape", "j"],
+            "left": [self.prefix, "key", "Escape", "h"],
+            "right": [self.prefix, "key", "Escape", "l"],
+            "scroll_up": [self.prefix, "key", "Control_L+b"],
+            "scroll_down": [self.prefix, "key", "Control_L+f"],
+            "vim_split_window_v":
+            [self.prefix, "key", "Escape", "Control_L+w", "v"],
+            "vim_switch_window":
+            [self.prefix, "key", "Escape", "Control_L+w", "w"],
+            "vim_close_window":
+            [self.prefix, "key", "Escape", "Control_L+w", "c"],
+            "vim_save": [self.prefix, "key", "Escape", "Control_L+s"],
+            "vim_exit": [self.prefix, "key", "Escape", "colon", "q", "Return"],
+        }
 
-    def i3wm_zoom_in(self):
-        self.send_command([self.prefix, "key", "Control_L+plus"])
+        self.nano_actions = {
+            "exit": [self.prefix, "key", "Control_L+x"],
+            "exit_confirm": [self.prefix, "key", "Control_L+x", "y", "Return"],
+        }
 
-    def i3wm_zoom_out(self):
-        self.send_command([self.prefix, "key", "Control_L+underscore"])
+    def send_command_take_screenshots(self, command, before=4, after=4):
+        self.take_screenshots(before)
+        subprocess.run(command)
+        self.take_screenshots(after)
 
-    def i3wm_focus_right(self):
-        self.send_command([self.prefix, "key", "Alt_L+Right"])
+    def send_command(self, command):
+        subprocess.run(command)
 
-    def i3wm_focus_up(self):
-        self.send_command([self.prefix, "key", "Alt_L+Up"])
+    def nano_send_command(self, command):
+        self.send_command(self.nano_actions[command])
 
-    def i3wm_focus_down(self):
-        self.send_command([self.prefix, "key", "Alt_L+Down"])
+    def vim_send_command(self, command):
+        self.send_command(self.vim_actions[command])
 
-    def i3wm_toggle_fullscreen(self):
-        self.send_command([self.prefix, "key", "Alt_L+f"])
+    def i3wm_send_command(self, command):
+        self.send_command(self.i3wm_actions[command])
 
-    def i3wm_ws_1(self):
-        self.send_command([self.prefix, "key", "Alt_L+1"])
+    def nano_send_command_take_screenshots(self, command, before=4, after=4):
+        self.send_command_take_screenshots(self.nano_actions[command], before,
+                                           after)
 
-    def i3wm_ws_2(self):
-        self.send_command([self.prefix, "key", "Alt_L+2"])
+    def vim_send_command_take_screenshots(self, command, before=4, after=4):
+        self.send_command_take_screenshots(self.vim_actions[command],
+                                           before=4,
+                                           after=4)
 
-    def vim_insert(self):
-        self.send_command([self.prefix, "key", "Escape", "i"])
-
-    def vim_up(self):
-        self.send_command([self.prefix, "key", "Escape", "k"])
-
-    def vim_down(self):
-        self.send_command([self.prefix, "key", "Escape", "j"])
-
-    def vim_left(self):
-        self.send_command([self.prefix, "key", "Escape", "h"])
-
-    def vim_right(self):
-        self.send_command([self.prefix, "key", "Escape", "l"])
-
-    def vim_scroll_up(self):
-        self.send_command([self.prefix, "key", "Control_L+b"])
-
-    def vim_scroll_down(self):
-        self.send_command([self.prefix, "key", "Control_L+f"])
+    def i3wm_send_command_take_screenshots(self, command, before=4, after=4):
+        self.send_command_take_screenshots(self.i3wm_actions[command], before,
+                                           after)
 
     def vim_go_to_line(self, n):
         line_n = list(n)
@@ -98,131 +114,52 @@ class ScreencastScript:
         self.sleep(1)
         self.send_command([self.prefix, "key", "z", "t"])
 
-    def vim_split_window_v(self):
-        self.send_command([self.prefix, "key", "Escape", "Control_L+w", "v"])
-
-    def vim_switch_window(self):
-        self.send_command([self.prefix, "key", "Escape", "Control_L+w", "w"])
-
-    def vim_close_window(self):
-        self.send_command([self.prefix, "key", "Escape", "Control_L+w", "c"])
-
-    def vim_save(self):
-        self.send_command([self.prefix, "key", "Escape", "Control_L+s"])
-
-    def vim_exit(self):
-        self.send_command(
-            [self.prefix, "key", "Escape", "colon", "q", "Return"])
-
-    def nano_exit(self):
-        self.send_command([self.prefix, "key", "Control_L+x"])
-
-    def nano_exit_confirm(self):
-        self.send_command([self.prefix, "key", "Control_L+x", "y", "Return"])
-
-    def i3wm_zoom_in_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Control_L+plus"], before, after)
-
-    def i3wm_zoom_out_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Control_L+underscore"], before, after)
-
-    def i3wm_focus_left_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Left"],
-                                           before, after)
-
-    def i3wm_focus_right_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Right"],
-                                           before, after)
-
-    def i3wm_focus_up_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Up"],
-                                           before, after)
-
-    def i3wm_focus_down_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Down"],
-                                           before, after)
-
-    def i3wm_toggle_fullscreen_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+f"],
-                                           before, after)
-
-    def i3wm_ws_1_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+1"],
-                                           before, after)
-
-    def i3wm_ws_2_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Alt_L+2"],
-                                           before, after)
-
-    def vim_insert_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Escape", "i"],
-                                           before, after)
-
-    def vim_up_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Escape", "k"],
-                                           before, after)
-
-    def vim_down_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Escape", "j"],
-                                           before, after)
-
-    def vim_left_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Escape", "h"],
-                                           before, after)
-
-    def vim_right_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Escape", "l"],
-                                           before, after)
-
-    def vim_scroll_up_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Control_L+b"],
-                                           before, after)
-
-    def vim_scroll_down_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Control_L+f"],
-                                           before, after)
-
-    def vim_go_to_line_take_screenshots(self, n, before=4, after=4):
+    def vim_go_to_line_take_screenshots(self, n, before=4, after=4, path=None):
         line_n = list(n)
         prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
         self.send_command_take_screenshots([self.prefix, "key", "Escape"],
-                                           before, after)
+                                           before,
+                                           after,
+                                           path=None)
         self.sleep(0.2)
-        self.send_command_take_screenshots(prefix_key_line_n_go, before, after)
+        self.send_command_take_screenshots(prefix_key_line_n_go,
+                                           before,
+                                           after,
+                                           path=None)
         self.sleep(0.2)
         self.send_command_take_screenshots([self.prefix, "key", "z", "t"],
-                                           before, after)
+                                           before,
+                                           after,
+                                           path=None)
 
-    def vim_split_window_v_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+w", "v"], before, after)
+    def i3wm_launch(self, program):
+        if (program == "gvim"):
+            self.send_command([self.prefix, "key", "Super_L+g"])
+        elif (program == "vim"):
+            self.send_command([self.prefix, "key", "Alt_L+Return"])
+            self.sleep(5)
+            self.send_command([self.prefix, "key", "v", "i", "m", "Return"])
 
-    def vim_switch_window_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+w", "w"], before, after)
+        elif (program == "kitty"):
+            self.send_command([self.prefix, "key", "Alt_L+Return"])
 
-    def vim_close_window_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+w", "c"], before, after)
+        elif (program == "xonsh"):
+            self.send_command([self.prefix, "key", "Alt_L+Return"])
+            self.sleep(5)
+            self.send_command([
+                self.prefix, "key", "x", "o", "n", "s", "h", "space", "minus",
+                "minus", "r", "c", "space", "period", "r", "c", "minus", "s",
+                "c", "Return"
+            ])
 
-    def vim_save_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+s"], before, after)
-
-    def vim_exit_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "colon", "q", "Return"], before,
-            after)
-
-    def nano_exit_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots([self.prefix, "key", "Control_L+x"],
-                                           before, after)
-
-    def nano_exit_confirm_take_screenshots(self, before=4, after=4):
-        self.send_command_take_screenshots(
-            [self.prefix, "key", "Control_L+x", "y", "Return"], before, after)
+    def kitty_launch(self, program, file_name=None):
+        if (file_name is not None):
+            self.send_command([
+                "kitty", "@", "launch", "--type=os-window", program, file_name
+            ])
+        else:
+            self.send_command(
+                ["kitty", "@", "launch", "--type=os-window", program])
 
     def sleep(self, time_to_sleep=0):
         time.sleep(time_to_sleep)
@@ -469,43 +406,4 @@ class ScreencastScript:
         """
         with open(f'{video_name}.txt', "a") as file:
             file.write(f"file '{SOURCE_DIR}{png_list[len(png_list) - 1]}'\n")
-
         self.send_command(ffmpeg_command)
-
-    def i3wm_launch(self, program):
-        if (program == "gvim"):
-            self.send_command([self.prefix, "key", "Super_L+g"])
-
-        elif (program == "vim"):
-            self.send_command([self.prefix, "key", "Alt_L+Return"])
-            self.sleep(5)
-            self.send_command([self.prefix, "key", "v", "i", "m", "Return"])
-
-        elif (program == "kitty"):
-            self.send_command([self.prefix, "key", "Alt_L+Return"])
-
-        elif (program == "xonsh"):
-            self.send_command([self.prefix, "key", "Alt_L+Return"])
-            self.sleep(5)
-            self.send_command([
-                self.prefix, "key", "x", "o", "n", "s", "h", "space", "minus",
-                "minus", "r", "c", "space", "period", "r", "c", "minus", "s",
-                "c", "Return"
-            ])
-
-    def kitty_launch(self, program, file_name=None):
-        if (file_name is not None):
-            self.send_command([
-                "kitty", "@", "launch", "--type=os-window", program, file_name
-            ])
-        else:
-            self.send_command(
-                ["kitty", "@", "launch", "--type=os-window", program])
-
-    def send_command_take_screenshots(self, command, before=4, after=4):
-        self.take_screenshots(before)
-        subprocess.run(command)
-        self.take_screenshots(after)
-
-    def send_command(self, command):
-        subprocess.run(command)
