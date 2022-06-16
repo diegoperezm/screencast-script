@@ -120,118 +120,121 @@ class ScreencastScript:
     def nano_exit_confirm(self):
         self.send_command([self.prefix, "key", "Control_L+x", "y", "Return"])
 
-    def i3wm_zoom_in_take_screenshots(self, before=4, after=4):
+    def i3wm_zoom_in_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Control_L+plus"], before, after)
+            [self.prefix, "key", "Control_L+plus"], before, after, focus_window=False)
 
-    def i3wm_zoom_out_take_screenshots(self, before=4, after=4):
+    def i3wm_zoom_out_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Control_L+underscore"], before, after)
+            [self.prefix, "key", "Control_L+underscore"], before, after, focus_window=False)
 
-    def i3wm_focus_left_take_screenshots(self, before=4, after=4):
+    def i3wm_focus_left_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Left"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def i3wm_focus_right_take_screenshots(self, before=4, after=4):
+    def i3wm_focus_right_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Right"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def i3wm_focus_up_take_screenshots(self, before=4, after=4):
+    def i3wm_focus_up_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Up"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def i3wm_focus_down_take_screenshots(self, before=4, after=4):
+    def i3wm_focus_down_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+Down"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def i3wm_toggle_fullscreen_take_screenshots(self, before=4, after=4):
+    def i3wm_toggle_fullscreen_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+f"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def i3wm_ws_1_take_screenshots(self, before=4, after=4):
+    def i3wm_ws_1_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+1"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def i3wm_ws_2_take_screenshots(self, before=4, after=4):
+    def i3wm_ws_2_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Alt_L+2"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_insert_take_screenshots(self, before=4, after=4):
+    def vim_insert_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Escape", "i"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_up_take_screenshots(self, before=4, after=4):
+    def vim_up_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Escape", "k"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_down_take_screenshots(self, before=4, after=4):
+    def vim_down_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Escape", "j"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_left_take_screenshots(self, before=4, after=4):
+    def vim_left_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Escape", "h"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_right_take_screenshots(self, before=4, after=4):
+    def vim_right_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Escape", "l"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_scroll_up_take_screenshots(self, before=4, after=4):
+    def vim_scroll_up_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Control_L+b"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_scroll_down_take_screenshots(self, before=4, after=4):
+    def vim_scroll_down_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Control_L+f"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_go_to_line_take_screenshots(self, n, before=4, after=4):
+    def vim_go_to_line_take_screenshots(self, n, before=4, after=4, focus_window=False):
         line_n = list(n)
         prefix_key_line_n_go = [self.prefix, "key"] + line_n + ["G"]
         self.send_command_take_screenshots([self.prefix, "key", "Escape"],
-                                           before, after)
+                                           before, after, focus_window=False)
         self.sleep(0.2)
-        self.send_command_take_screenshots(prefix_key_line_n_go, before, after)
+        self.send_command_take_screenshots(prefix_key_line_n_go, before, after, focus_window=False)
         self.sleep(0.2)
         self.send_command_take_screenshots([self.prefix, "key", "z", "t"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def vim_split_window_v_take_screenshots(self, before=4, after=4):
+    def vim_split_window_v_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+w", "v"], before, after)
+            [self.prefix, "key", "Escape", "Control_L+w", "v"], before, after, focus_window=False)
 
-    def vim_switch_window_take_screenshots(self, before=4, after=4):
+    def vim_switch_window_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+w", "w"], before, after)
+            [self.prefix, "key", "Escape", "Control_L+w", "w"], before, after, focus_window=False)
 
-    def vim_close_window_take_screenshots(self, before=4, after=4):
+    def vim_close_window_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+w", "c"], before, after)
+            [self.prefix, "key", "Escape", "Control_L+w", "c"], before, after, focus_window=False)
 
-    def vim_save_take_screenshots(self, before=4, after=4):
+    def vim_save_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Escape", "Control_L+s"], before, after)
+            [self.prefix, "key", "Escape", "Control_L+s"], before, after, focus_window=False)
 
-    def vim_exit_take_screenshots(self, before=4, after=4):
+    def vim_exit_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
             [self.prefix, "key", "Escape", "colon", "q", "Return"], before,
-            after)
+            after, focus_window=False)
 
-    def nano_exit_take_screenshots(self, before=4, after=4):
+    def nano_exit_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots([self.prefix, "key", "Control_L+x"],
-                                           before, after)
+                                           before, after, focus_window=False)
 
-    def nano_exit_confirm_take_screenshots(self, before=4, after=4):
+    def nano_exit_confirm_take_screenshots(self, before=4, after=4, focus_window=False):
         self.send_command_take_screenshots(
-            [self.prefix, "key", "Control_L+x", "y", "Return"], before, after)
+            [self.prefix, "key", "Control_L+x", "y", "Return"], before, after, focus_window=False)
 
     def sleep(self, time_to_sleep=0):
         time.sleep(time_to_sleep)
 
-    def __take_png(self, path=None, counter=None, quality="75"):
+    def __take_png(self, path=None, counter=None, quality="75", focus_window=False):
+
+        focused = "scrot", f'{path}{str(counter)}.png', "-u", "--quality", f'{quality}'
+        non_focused = "scrot", f'{path}{str(counter)}.png', "--quality", f'{quality}'
+        scrot_command = focused if focus_window is True else non_focused
+
         if (isinstance(path, str) and isinstance(counter, int)):
-            self.send_command([
-                "scrot", f'{path}{str(counter)}.png', "--quality", f'{quality}'
-            ])
+            self.send_command(scrot_command)
         else:
             print("__take_png, replace this with a better error handler")
 
@@ -332,7 +335,8 @@ class ScreencastScript:
                                     text,
                                     path="./img/",
                                     quality="75",
-                                    sleep=0.2):
+                                    sleep=0.2,
+                                    focus_window=False):
 
         # counter: number of png files on {path}
         counter = len(os.listdir(path))
@@ -341,14 +345,14 @@ class ScreencastScript:
             self.send_command(self.text_command(char))
             # sleep: when completedProcess is returned, there is nothing in the screen
             self.sleep(sleep)
-            self.__take_png(path, counter, quality)
+            self.__take_png(path, counter, quality, focus_window)
 
-    def take_screenshots(self, n=1, path="./img/", quality="75", sleep=0):
+    def take_screenshots(self, n=1, path="./img/", quality="75", sleep=0, focus_window=False):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         counter = len(os.listdir(path))
         for x in range(n):
             counter += 1
-            self.__take_png(path, counter, quality)
+            self.__take_png(path, counter, quality, focus_window)
             self.sleep(sleep)
 
     def make_video_chunk(self,
@@ -358,7 +362,8 @@ class ScreencastScript:
                          quality="75",
                          frame_duration=0.2,
                          video_name="video",
-                         video_ext=".mp4"):
+                         video_ext=".mp4",
+                         focus_window=False):
         """
         texts:    [{
                     "text_code": str,
@@ -388,7 +393,7 @@ class ScreencastScript:
                 for char in text["text_code"]:
                     text_screenshot_counter += 1
                     self.send_command(self.text_command(char))
-                    self.__take_png(path, text_screenshot_counter, quality)
+                    self.__take_png(path, text_screenshot_counter, quality, focus_window)
                     self.sleep(sleep_text)
         else:
             print("make_video_chunk, replace this with a better error handler")
@@ -405,7 +410,7 @@ class ScreencastScript:
 
                 for x in range(screenshot_n):
                     screenshot_counter += 1
-                    self.__take_png(path, screenshot_counter, quality)
+                    self.__take_png(path, screenshot_counter, quality, focus_window)
                     self.sleep(sleep_command)
         else:
             print("make_video_chunk, replace this with a better error handler")
@@ -502,10 +507,10 @@ class ScreencastScript:
             self.send_command(
                 ["kitty", "@", "launch", "--type=os-window", program])
 
-    def send_command_take_screenshots(self, command, before=4, after=4):
-        self.take_screenshots(before)
+    def send_command_take_screenshots(self, command, before=4, after=4, focus_window=False):
+        self.take_screenshots(before, focus_window)
         subprocess.run(command)
-        self.take_screenshots(after)
+        self.take_screenshots(after, focus_window)
 
     def send_command(self, command):
         subprocess.run(command)
